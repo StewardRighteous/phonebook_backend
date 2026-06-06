@@ -29,13 +29,22 @@ app.get("/api/persons/:id", (req, res) => {
   const person = phoneBook.find((n) => n.id === id);
   person ? res.json(person) : res.status(404).end();
 });
+
+app.delete("/api/persons/:id", (req, res) => {
+  const id = req.params.id;
+  phoneBook = phoneBook.filter((n) => n.id !== id);
+  res.status(204).end();
+});
+
 app.get("/api/persons", (req, res) => res.json(phoneBook));
+
 app.get("/info", (req, res) =>
   res.send(
     `<p> Phonebook has info for ${phoneBook.length} people </p> 
     <p> ${new Date()} </p> `,
   ),
 );
+
 app.get("/", (req, res) => res.json({ name: "PhoneBook API" }));
 
 const PORT = 3001;
