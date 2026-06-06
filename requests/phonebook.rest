@@ -23,3 +23,26 @@ Content-Type:application/json
     "name":"Steward Righteous",
     "number":"2547891456665"
 }
+
+###
+POST http://localhost:3001/api/persons
+Content-Type:application/json
+
+{}
+
+###
+POST http://localhost:3001/api/persons
+Content-Type:application/json
+
+{
+    "name": "Mahaveer"
+}
+
+###
+POST http://localhost:3001/api/persons
+Content-Type:application/json
+
+{
+    "name":"arto Hellas",
+    "number":"2547891456665"
+}

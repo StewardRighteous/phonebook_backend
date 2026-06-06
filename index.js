@@ -51,6 +51,14 @@ app.get("/api/persons", (req, res) => res.json(phoneBook));
 
 app.post("/api/persons", (req, res) => {
   const { name, number } = req.body;
+
+  if (!name) return res.status(400).json({ error: "name is required" });
+  if (!number) return res.status(400).json({ error: "number is required" });
+
+  const existingNames = phoneBook.map((n) => n.name.toLowerCase());
+  if (existingNames.includes(name.toLowerCase()))
+    return res.status(400).json({ error: "name already exists" });
+
   const newPerson = {
     name: name,
     number: number,
