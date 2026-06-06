@@ -24,6 +24,11 @@ let phoneBook = [
   },
 ];
 
+app.get("/api/persons/:id", (req, res) => {
+  const id = req.params.id;
+  const person = phoneBook.find((n) => n.id === id);
+  person ? res.json(person) : res.status(404).end();
+});
 app.get("/api/persons", (req, res) => res.json(phoneBook));
 app.get("/info", (req, res) =>
   res.send(
