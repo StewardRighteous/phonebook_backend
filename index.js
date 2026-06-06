@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 
+app.use(express.json());
+
 let phoneBook = [
   {
     id: "1",
@@ -24,6 +26,15 @@ let phoneBook = [
   },
 ];
 
+const generateId = () => {
+  let val;
+  const ids = phoneBook.map((n) => Number(n.id));
+  do {
+    val = Math.random() * 1000;
+  } while (ids.includes(val));
+  return Math.trunc(val);
+};
+
 app.get("/api/persons/:id", (req, res) => {
   const id = req.params.id;
   const person = phoneBook.find((n) => n.id === id);
@@ -37,6 +48,17 @@ app.delete("/api/persons/:id", (req, res) => {
 });
 
 app.get("/api/persons", (req, res) => res.json(phoneBook));
+
+app.post("/api/persons", (req, res) => {
+  const { name, number } = req.body;
+  const newPerson = {
+    name: name,
+    number: number,
+    id: generateId(),
+  };
+  phoneBook = phoneBook.concat(newPerson);
+  res.json(newPerson);
+});
 
 app.get("/info", (req, res) =>
   res.send(

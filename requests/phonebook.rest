@@ -14,3 +14,12 @@ GET http://localhost:3001/api/persons/10
 
 ###
 DELETE http://localhost:3001/api/persons/2
+
+###
+POST http://localhost:3001/api/persons
+Content-Type:application/json
+
+{
+    "name":"Steward Righteous",
+    "number":"2547891456665"
+}
