@@ -1,0 +1,48 @@
+GET https://phonebook-backend-jocw.onrender.com/
+
+###
+GET https://phonebook-backend-jocw.onrender.com/persons
+
+###
+GET http://localhost:3001/info
+
+###
+GET https://phonebook-backend-jocw.onrender.com/persons/1
+
+###
+GET https://phonebook-backend-jocw.onrender.com/persons/10
+
+###
+DELETE https://phonebook-backend-jocw.onrender.com/persons/2
+
+###
+POST https://phonebook-backend-jocw.onrender.com/persons
+Content-Type:application/json
+
+{
+    "name":"Steward Righteous",
+    "number":"2547891456665"
+}
+
+###
+POST https://phonebook-backend-jocw.onrender.com/persons
+Content-Type:application/json
+
+{}
+
+###
+POST https://phonebook-backend-jocw.onrender.com/persons
+Content-Type:application/json
+
+{
+    "name": "Mahaveer"
+}
+
+###
+POST https://phonebook-backend-jocw.onrender.com/persons
+Content-Type:application/json
+
+{
+    "name":"arto Hellas",
+    "number":"2547891456665"
+}
