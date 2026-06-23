@@ -1,10 +1,16 @@
+require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
+const mongoose = require("mongoose");
+const Person = require("./models/person");
 
 const app = express();
 
+mongoose.set("strictQuery", false);
+mongoose.connect(process.env.MONGO_DB_URL, { family: 4 });
+
 app.use(express.json());
-app.use(express.static('dist'))
+app.use(express.static("dist"));
 
 morgan.token("data", (req, res) => JSON.stringify(req.body));
 
@@ -56,7 +62,9 @@ app.delete("/api/persons/:id", (req, res) => {
   res.status(204).end();
 });
 
-app.get("/api/persons", (req, res) => res.json(phoneBook));
+app.get("/api/persons", (req, res) =>
+  Person.find({}).then((persons) => res.json(persons)),
+);
 
 app.post("/api/persons", (req, res) => {
   const { name, number } = req.body;
