@@ -31,13 +31,13 @@ app.put("/api/persons/:id", (req, res) => {
       if (!person) return res.status(404).end();
       person.name = name;
       person.number = number;
-      person.save().then((updatedPerson) => res.json(updatedPerson));
+      return person.save().then((updatedPerson) => res.json(updatedPerson));
     })
     .catch((err) => next(err));
 });
 
 app.delete("/api/persons/:id", (req, res, next) => {
-  Person.findByIdAndDelete(req.params.id)
+  return Person.findByIdAndDelete(req.params.id)
     .then((result) => res.status(204).end())
     .catch((err) => next(err));
 });
