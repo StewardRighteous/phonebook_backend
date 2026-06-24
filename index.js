@@ -18,13 +18,15 @@ app.use(
   morgan(":method :url :status :res[content-length] - :response-time ms :data"),
 );
 
-app.get("/api/persons/:id", (req, res) => {
-  const id = req.params.id;
-  const person = phoneBook.find((n) => n.id === id);
-  person ? res.json(person) : res.status(404).end();
+app.get("/api/persons/:id", (req, res, next) => {
+  Person.findById(req.params.id)
+    .then((person) => {
+      person ? res.json(person) : res.status(404).end();
+    })
+    .catch((err) => next(err));
 });
 
-app.put("/api/persons/:id", (req, res) => {
+app.put("/api/persons/:id", (req, res, next) => {
   const { name, number } = req.body;
   Person.findById(req.params.id)
     .then((person) => {
@@ -37,18 +39,18 @@ app.put("/api/persons/:id", (req, res) => {
 });
 
 app.delete("/api/persons/:id", (req, res, next) => {
-  return Person.findByIdAndDelete(req.params.id)
+  Person.findByIdAndDelete(req.params.id)
     .then((result) => res.status(204).end())
     .catch((err) => next(err));
 });
 
-app.get("/api/persons", (req, res) =>
+app.get("/api/persons", (req, res, next) =>
   Person.find({})
     .then((persons) => res.json(persons))
     .catch((err) => next(err)),
 );
 
-app.post("/api/persons", (req, res) => {
+app.post("/api/persons", (req, res, next) => {
   const { name, number } = req.body;
 
   if (!name) return res.status(400).json({ error: "name is required" });
@@ -65,14 +67,24 @@ app.post("/api/persons", (req, res) => {
     .catch((err) => next(err));
 });
 
-app.get("/info", (req, res) =>
-  res.send(
-    `<p> Phonebook has info for ${phoneBook.length} people </p> 
+app.get("/info", (req, res, next) =>
+  Person.find({})
+    .then((persons) => {
+      res.send(
+        `<p> Phonebook has info for ${persons.length} people </p> 
     <p> ${new Date()} </p> `,
-  ),
+      );
+    })
+    .catch((err) => next(err)),
 );
 
 app.get("/", (req, res) => res.json({ name: "PhoneBook API" }));
+
+const unknownEndPoint = (req, res) => {
+  res.status(404).send({ error: "unknown end point" });
+};
+
+app.use(unknownEndPoint);
 
 const errorHandler = (error, req, res, next) => {
   console.error(error.message);
