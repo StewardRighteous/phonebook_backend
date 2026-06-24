@@ -25,9 +25,9 @@ app.get("/api/persons/:id", (req, res) => {
 });
 
 app.delete("/api/persons/:id", (req, res) => {
-  const id = req.params.id;
-  phoneBook = phoneBook.filter((n) => n.id !== id);
-  res.status(204).end();
+  Person.findByIdAndDelete(req.params.id).then((result) =>
+    res.status(204).end(),
+  );
 });
 
 app.get("/api/persons", (req, res) =>
