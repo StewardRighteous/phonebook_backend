@@ -24,6 +24,18 @@ app.get("/api/persons/:id", (req, res) => {
   person ? res.json(person) : res.status(404).end();
 });
 
+app.put("/api/persons/:id", (req, res) => {
+  const { name, number } = req.body;
+  Person.findById(req.params.id)
+    .then((person) => {
+      if (!person) return res.status(404).end();
+      person.name = name;
+      person.number = number;
+      person.save().then((updatedPerson) => res.json(updatedPerson));
+    })
+    .catch((err) => next(err));
+});
+
 app.delete("/api/persons/:id", (req, res, next) => {
   Person.findByIdAndDelete(req.params.id)
     .then((result) => res.status(204).end())
